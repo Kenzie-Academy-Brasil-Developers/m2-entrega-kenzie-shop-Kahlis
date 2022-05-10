@@ -21,14 +21,19 @@ class Product {
 
     toHTML() {
         let actualPrice = parseFloat(this.price).toFixed("2").toString().replace(".", ",");
+        let originalPrice = parseFloat(this.defaultPrice).toFixed("2").toString().replace(".", ",");
+        let priceTag = `<span class="price">R$${actualPrice}</span>`;
+        if(actualPrice != originalPrice) {
+            priceTag = `<span class="originalPrice">R$${originalPrice}</span>
+                        <span class="price">R$${actualPrice}</span>`;
+        }
         let productNode = document.createElement("div");
         productNode.classList.add("product");
         productNode.innerHTML = `<figure class="product-image">
                                     <img src="${this.image}" alt="Imagem">
                                 </figure>
                                 <div class="rating">${this.getReview()}</div>
-                                <p class="name">${this.name}</p>
-                                <span class="price">R$${actualPrice}</span>
+                                <p class="name">${this.name}</p> ${priceTag}
                                 <button class="buy-button">Comprar</button>`
         return productNode;
     }
@@ -52,9 +57,15 @@ fetch("https://m2-kenzie-shop.herokuapp.com/products")
     .then(function(json) {
         for(let p in json["products"]) {
             let product = json["products"][p];
-            let finalProduct = new Product(parseInt(product["id"]), product["productName"], product["imageUrl"],
-                                                    product["price"]["productPrice"], product["price"]["productPromotionPrice"],
-                                                    product["promotionStatus"], product["reviews"]);
+            let finalProduct = new Product(
+                parseInt(product["id"]),
+                product["productName"],
+                product["imageUrl"], 
+                product["price"]["productPrice"],
+                product["price"]["productPromotionPrice"],
+                product["promotionStatus"],
+                product["reviews"]
+            );
             marketplace.push(finalProduct);
         }
         RefreshProducts();
