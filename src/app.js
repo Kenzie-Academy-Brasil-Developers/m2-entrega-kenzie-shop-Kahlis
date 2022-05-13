@@ -24,8 +24,8 @@ class Product {
         let originalPrice = parseFloat(this.defaultPrice).toFixed("2").toString().replace(".", ",");
         let priceTag = `<span class="price">R$${actualPrice}</span>`;
         if(actualPrice != originalPrice) {
-            priceTag = `<span class="originalPrice">R$${originalPrice}</span>
-                        <span class="price">R$${actualPrice}</span>`;
+            priceTag = `<span class="originalPrice">de: R$${originalPrice}</span>
+                        <span class="price">por: R$${actualPrice}</span>`;
         }
         let productNode = document.createElement("div");
         productNode.classList.add("product");
